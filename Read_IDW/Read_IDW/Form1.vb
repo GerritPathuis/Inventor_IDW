@@ -54,25 +54,6 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
-
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        'Inventor update Iproperty
-        Dim invApp As Inventor.Application
-        invApp = System.Runtime.InteropServices.Marshal.GetActiveObject("Inventor.Application")
-
-        Dim Doc As Inventor.Document
-        Doc = invApp.ActiveDocument
-
-        UpdateCustomiProperty(Doc, "MYPROPERTY", TextBox1.Text)
-
-        Doc.Update()
-        'Set_Custom_Property_VirtualComponent(ByVal oOcc As ComponentOccurrence, "Title", "FAN BOTTOM CASING2")
-        Set_Custom_Property_VirtualComponent("oOcc.name", "Title", "FAN BOTTOM CASING2")
-    End Sub
-
     Sub Set_Custom_Property_VirtualComponent(ByVal oOcc As ComponentOccurrence, ByVal PropName As String, ByVal NewValue As String)
 
         Dim VirtualDef As VirtualComponentDefinition = TryCast(oOcc.Definition, VirtualComponentDefinition)
@@ -82,7 +63,7 @@ Public Class Form1
         Try
             'set new value
             oProperty = oCustomPropertySet.Item(PropName)
-            If oProperty.Value.ToString Then
+            If CBool(oProperty.Value.ToString) Then
                 oProperty.Value = NewValue
             End If
         Catch ex As Exception
@@ -91,29 +72,7 @@ Public Class Form1
         End Try
     End Sub
 
-    Private Sub UpdateCustomiProperty(ByRef Doc As Inventor.Document, ByRef PropertyName As String, ByRef PropertyValue As Object)
-        ' Get the custom property set. 
-        Dim customPropSet As Inventor.PropertySet
-        customPropSet = Doc.PropertySets.Item("Inventor User Defined Properties")
 
-        ' Get the existing property, if it exists. 
-        Dim prop As Inventor.Property = Nothing
-        Dim propExists As Boolean = True
-        Try
-            prop = customPropSet.Item(PropertyName)
-        Catch ex As Exception
-            propExists = False
-        End Try
-
-        ' Check to see if the property was successfully obtained. 
-        If Not propExists Then
-            ' Failed to get the existing property so create a new one. 
-            prop = customPropSet.Add(PropertyValue, PropertyName)
-        Else
-            ' Change the value of the existing property. 
-            prop.Value = PropertyValue
-        End If
-    End Sub
     'http://modthemachine.typepad.com/my_weblog/2010/02/accessing-iproperties.html
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Dim information As System.IO.FileInfo
@@ -125,35 +84,19 @@ Public Class Form1
         TextBox2.Text &= "The length is " & information.Length
     End Sub
 
-    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
-        ' I have a simple code below trying to iterate through all the assembly component And copy the iProperties > Occurrece Name (i.e. "Part1:1") And paste it to iProperties > Project tab > Part Number field for each individual part in assembly.
 
-        ' set a reference to the assembly component definintion.
-        ' This assumes an assembly document is open.
-        ''Dim oAsmCompDef As AssemblyComponentDefinition
-        ''oAsmCompDef = ThisApplication.ActiveDocument.ComponentDefinition
-
-        '''Iterate through all of the occurrences
-        ''Dim oOccurrence As ComponentOccurrence
-        ''For Each oOccurrence In oAsmCompDef.Occurrences
-        ''    Dim oName As String
-        ''    oName = oOccurrence.Name
-        ''    iProperties.Value(oOccurrence.Name, "Project", "Part Number") = oName
-        ''    MessageBox.Show(oOccurrence.Name, "iLogic")
-        ''Next
-
-        ' The Debug message shows the correct output For every iteration, but when I check each part's properties they all have the Occurrence Name of the last part in the aseembly.
-        '  I am obivously doing something wrong With the code, but I can't get my head around it at the moment and was hoping someone could help me.
-    End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
         'Read Iproperty
-        ' Get the active document. 
-        Dim invApp As Inventor.Application
-        invApp = System.Runtime.InteropServices.Marshal.GetActiveObject("Inventor.Application")
 
-        Dim oDoc As Inventor.Document
-        oDoc = invApp.ActiveDocument
+        ' Create Apprentice.
+        Dim oApprentice As ApprenticeServerComponent
+        oApprentice = New ApprenticeServerComponent
+
+        ' Open a document.
+        Dim oDoc As ApprenticeServerDocument
+        oDoc = oApprentice.Open("C:\Repositories\Inventor_IDW\Test.ipt")
+        MsgBox("Opened: " & oDoc.DisplayName)
 
         ' Get the PropertySets object. 
         Dim oPropSets As PropertySets
@@ -164,55 +107,36 @@ Public Class Form1
         oPropSet = oPropSets.Item("Design Tracking Properties")
 
         ' Get the part number iProperty. 
-        Dim oPartNumiProp As PropertySet
+        ' Dim oPartNumiProp As PropertySet
 
-        oPartNumiProp = oPropSet.Item("Part Number")
+        'oPartNumiProp = CType(oPropSet.Item("Part Number"), PropertySet)
 
         ' Display the value. 
-        TextBox3.Text = "The part number is: " & oPartNumiProp.Value
+        'TextBox3.Text = "The part number is: " & oPartNumiProp.Value
     End Sub
-    'VB.net text see http://modthemachine.typepad.com/my_weblog/2010/02/custom-iproperties.html
-    Private Sub TestiPropertyUpdate()
-        ' Connect to a running instance of Inventor. 
-        ' Watch out for the wrapped line. 
-        Dim invApp As Inventor.Application
-        invApp = System.Runtime.InteropServices.Marshal.GetActiveObject("Inventor.Application")
-
-        ' Get the active document. 
-        Dim Doc As Inventor.Document
-        Doc = invApp.ActiveDocument
-
-        ' Update or create the custom iProperty. 
-        UpdateCustomiProperty2(Doc, "Test", "Some Text")
+    Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
+        SetProperty("Piet")
     End Sub
 
+    'Change the auther name in Iproperties
+    Private Sub SetProperty(ByVal author As String)
+        Dim mApprenticeserver As ApprenticeServerComponent
+        mApprenticeserver = New ApprenticeServerComponent
 
-    Private Sub UpdateCustomiProperty2(ByRef Doc As Inventor.Document, ByRef PropertyName As String, ByRef PropertyValue As Object)
-        ' Get the custom property set. 
-        Dim customPropSet As Inventor.PropertySet
-        customPropSet = Doc.PropertySets.Item("Inventor User Defined Properties")
+        Dim oApprenticeDoc As ApprenticeServerDocument
+        oApprenticeDoc = mApprenticeServer.Open("C:\Repositories\Inventor_IDW\Test.ipt")
 
-        ' Get the existing property, if it exists. 
-        Dim prop As Inventor.Property = Nothing
-        Dim propExists As Boolean = True
-        Try
-            prop = customPropSet.Item(PropertyName)
-        Catch ex As Exception
-            propExists = False
-        End Try
+        'Get "Inventor Summary Information" PropertySet
+        Dim oPropertySet As PropertySet
+        oPropertySet = oApprenticeDoc.PropertySets("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}")
 
-        ' Check to see if the property was successfully obtained. 
-        If Not propExists Then
-            ' Failed to get the existing property so create a new one. 
-            prop = customPropSet.Add(PropertyValue, PropertyName)
-        Else
-            ' Change the value of the existing property. 
-            prop.Value = PropertyValue
-        End If
+        'Get Author property
+        Dim oProperty As Inventor.Property = oPropertySet.Item("Author")
+        oProperty.Value = author
+
+        oApprenticeDoc.PropertySets.FlushToFile()
+        oApprenticeDoc.Close()
     End Sub
 
-    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
-        TestiPropertyUpdate()
-    End Sub
 End Class
 
