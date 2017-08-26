@@ -2,11 +2,11 @@
 Imports Inventor
 
 
-
 Public Class Form1
     Private iProperties As Object
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        'Directory create and delete
         Dim path As String = "c:\MyDir"
         Try
             ' Determine whether the directory exists.
@@ -33,7 +33,6 @@ Public Class Form1
         Dim openFileDialog1 As New OpenFileDialog()
 
         openFileDialog1.InitialDirectory = "c:\"
-        'openFileDialog1.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"
         openFileDialog1.Filter = "idw files |*.idw"
         openFileDialog1.FilterIndex = 2
         openFileDialog1.RestoreDirectory = True
@@ -60,7 +59,7 @@ Public Class Form1
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-
+        'Inventor update Iproperty
         Dim invApp As Inventor.Application
         invApp = System.Runtime.InteropServices.Marshal.GetActiveObject("Inventor.Application")
 
@@ -120,9 +119,10 @@ Public Class Form1
         Dim information As System.IO.FileInfo
         information = My.Computer.FileSystem.GetFileInfo("C:\Repositories\Inventor_IDW\VTKE-155000.idw")
 
-        MsgBox("The file's full name is " & information.FullName & ".")
-        MsgBox("Last access time is " & information.LastAccessTime & ".")
-        MsgBox("The length is " & information.Length & ".")
+        TextBox2.Clear()
+        TextBox2.Text &= "Name is " & information.FullName & vbCrLf
+        TextBox2.Text &= "Last access time is " & information.LastAccessTime & vbCrLf
+        TextBox2.Text &= "The length is " & information.Length
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
@@ -144,6 +144,75 @@ Public Class Form1
 
         ' The Debug message shows the correct output For every iteration, but when I check each part's properties they all have the Occurrence Name of the last part in the aseembly.
         '  I am obivously doing something wrong With the code, but I can't get my head around it at the moment and was hoping someone could help me.
+    End Sub
+
+    Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
+        'Read Iproperty
+        ' Get the active document. 
+        Dim invApp As Inventor.Application
+        invApp = System.Runtime.InteropServices.Marshal.GetActiveObject("Inventor.Application")
+
+        Dim oDoc As Inventor.Document
+        oDoc = invApp.ActiveDocument
+
+        ' Get the PropertySets object. 
+        Dim oPropSets As PropertySets
+        oPropSets = oDoc.PropertySets
+
+        ' Get the design tracking property set. 
+        Dim oPropSet As PropertySet
+        oPropSet = oPropSets.Item("Design Tracking Properties")
+
+        ' Get the part number iProperty. 
+        Dim oPartNumiProp As PropertySet
+
+        oPartNumiProp = oPropSet.Item("Part Number")
+
+        ' Display the value. 
+        TextBox3.Text = "The part number is: " & oPartNumiProp.Value
+    End Sub
+    'VB.net text see http://modthemachine.typepad.com/my_weblog/2010/02/custom-iproperties.html
+    Private Sub TestiPropertyUpdate()
+        ' Connect to a running instance of Inventor. 
+        ' Watch out for the wrapped line. 
+        Dim invApp As Inventor.Application
+        invApp = System.Runtime.InteropServices.Marshal.GetActiveObject("Inventor.Application")
+
+        ' Get the active document. 
+        Dim Doc As Inventor.Document
+        Doc = invApp.ActiveDocument
+
+        ' Update or create the custom iProperty. 
+        UpdateCustomiProperty2(Doc, "Test", "Some Text")
+    End Sub
+
+
+    Private Sub UpdateCustomiProperty2(ByRef Doc As Inventor.Document, ByRef PropertyName As String, ByRef PropertyValue As Object)
+        ' Get the custom property set. 
+        Dim customPropSet As Inventor.PropertySet
+        customPropSet = Doc.PropertySets.Item("Inventor User Defined Properties")
+
+        ' Get the existing property, if it exists. 
+        Dim prop As Inventor.Property = Nothing
+        Dim propExists As Boolean = True
+        Try
+            prop = customPropSet.Item(PropertyName)
+        Catch ex As Exception
+            propExists = False
+        End Try
+
+        ' Check to see if the property was successfully obtained. 
+        If Not propExists Then
+            ' Failed to get the existing property so create a new one. 
+            prop = customPropSet.Add(PropertyValue, PropertyName)
+        Else
+            ' Change the value of the existing property. 
+            prop.Value = PropertyValue
+        End If
+    End Sub
+
+    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
+        TestiPropertyUpdate()
     End Sub
 End Class
 
