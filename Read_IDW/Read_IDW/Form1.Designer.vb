@@ -23,35 +23,32 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Button4 = New System.Windows.Forms.Button()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
         Me.TextBox3 = New System.Windows.Forms.TextBox()
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Button8 = New System.Windows.Forms.Button()
+        Me.Button3 = New System.Windows.Forms.Button()
+        Me.Button5 = New System.Windows.Forms.Button()
+        Me.TextBox4 = New System.Windows.Forms.TextBox()
+        Me.TextBox5 = New System.Windows.Forms.TextBox()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(35, 100)
+        Me.Button1.Location = New System.Drawing.Point(12, 12)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(209, 30)
         Me.Button1.TabIndex = 0
         Me.Button1.Text = "Directory create and delete"
         Me.Button1.UseVisualStyleBackColor = True
         '
-        'TextBox1
-        '
-        Me.TextBox1.Location = New System.Drawing.Point(35, 54)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(173, 20)
-        Me.TextBox1.TabIndex = 1
-        Me.TextBox1.Text = "aaaabbbcccddd"
-        '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(35, 136)
+        Me.Button2.Location = New System.Drawing.Point(12, 48)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(209, 30)
         Me.Button2.TabIndex = 2
@@ -60,7 +57,7 @@ Partial Class Form1
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(35, 208)
+        Me.Button4.Location = New System.Drawing.Point(12, 92)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(531, 30)
         Me.Button4.TabIndex = 4
@@ -69,7 +66,7 @@ Partial Class Form1
         '
         'TextBox2
         '
-        Me.TextBox2.Location = New System.Drawing.Point(35, 244)
+        Me.TextBox2.Location = New System.Drawing.Point(12, 128)
         Me.TextBox2.Multiline = True
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Size = New System.Drawing.Size(531, 66)
@@ -78,7 +75,7 @@ Partial Class Form1
         '
         'TextBox3
         '
-        Me.TextBox3.Location = New System.Drawing.Point(35, 372)
+        Me.TextBox3.Location = New System.Drawing.Point(12, 256)
         Me.TextBox3.Multiline = True
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Size = New System.Drawing.Size(531, 66)
@@ -87,7 +84,7 @@ Partial Class Form1
         '
         'Button6
         '
-        Me.Button6.Location = New System.Drawing.Point(64, 340)
+        Me.Button6.Location = New System.Drawing.Point(40, 224)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(75, 23)
         Me.Button6.TabIndex = 8
@@ -96,39 +93,92 @@ Partial Class Form1
         '
         'Button8
         '
-        Me.Button8.Location = New System.Drawing.Point(385, 340)
+        Me.Button8.Location = New System.Drawing.Point(213, 224)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(143, 23)
         Me.Button8.TabIndex = 10
         Me.Button8.Text = "Change Iproperty ""auther"""
         Me.Button8.UseVisualStyleBackColor = True
         '
+        'Button3
+        '
+        Me.Button3.Location = New System.Drawing.Point(400, 224)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(143, 23)
+        Me.Button3.TabIndex = 11
+        Me.Button3.Text = "Copy ipt file"
+        Me.Button3.UseVisualStyleBackColor = True
+        '
+        'Button5
+        '
+        Me.Button5.Location = New System.Drawing.Point(6, 19)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(195, 23)
+        Me.Button5.TabIndex = 12
+        Me.Button5.Text = "Set part properties (inventor must run)"
+        Me.Button5.UseVisualStyleBackColor = True
+        '
+        'TextBox4
+        '
+        Me.TextBox4.Location = New System.Drawing.Point(6, 48)
+        Me.TextBox4.Name = "TextBox4"
+        Me.TextBox4.Size = New System.Drawing.Size(173, 20)
+        Me.TextBox4.TabIndex = 13
+        Me.TextBox4.Text = "Part nummer 123"
+        '
+        'TextBox5
+        '
+        Me.TextBox5.Location = New System.Drawing.Point(6, 74)
+        Me.TextBox5.Name = "TextBox5"
+        Me.TextBox5.Size = New System.Drawing.Size(173, 20)
+        Me.TextBox5.TabIndex = 14
+        Me.TextBox5.Text = "Part descripton456"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.Button5)
+        Me.GroupBox1.Controls.Add(Me.TextBox5)
+        Me.GroupBox1.Controls.Add(Me.TextBox4)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 361)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(231, 117)
+        Me.GroupBox1.TabIndex = 15
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Set Iproperties"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(805, 544)
+        Me.ClientSize = New System.Drawing.Size(580, 544)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button8)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.TextBox3)
         Me.Controls.Add(Me.TextBox2)
         Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Button1)
         Me.Name = "Form1"
         Me.Text = "Form1"
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
 
     Friend WithEvents Button1 As Button
-    Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Button2 As Button
     Friend WithEvents Button4 As Button
     Friend WithEvents TextBox2 As TextBox
     Friend WithEvents TextBox3 As TextBox
     Friend WithEvents Button6 As Button
     Friend WithEvents Button8 As Button
+    Friend WithEvents Button3 As Button
+    Friend WithEvents Button5 As Button
+    Friend WithEvents TextBox4 As TextBox
+    Friend WithEvents TextBox5 As TextBox
+    Friend WithEvents GroupBox1 As GroupBox
 End Class
