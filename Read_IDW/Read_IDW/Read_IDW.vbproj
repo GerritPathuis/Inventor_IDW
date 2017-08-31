@@ -57,6 +57,11 @@
     <ManifestCertificateThumbprint>B43CE5FFFCF938E528B8C43E524EF8F27496B9E2</ManifestCertificateThumbprint>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="autodesk.inventor.interop, Version=21.0.0.0, Culture=neutral, PublicKeyToken=d84147f8b4276564, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\autodesk.inventor.interop.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -129,15 +134,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="Inventor">
-      <Guid>{D98A091D-3A0F-4C3E-B36E-61F62068D488}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
     <COMReference Include="InventorApprentice">
       <Guid>{780FB82C-A4AA-4043-A0B6-ABCA50DB747A}</Guid>
       <VersionMajor>1</VersionMajor>

@@ -107,7 +107,7 @@ Public Class Form1
         mApprenticeserver = New ApprenticeServerComponent
 
         Dim oApprenticeDoc As ApprenticeServerDocument
-        oApprenticeDoc = mApprenticeServer.Open("C:\Repositories\Inventor_IDW\Test.ipt")
+        oApprenticeDoc = mApprenticeserver.Open("C:\Repositories\Inventor_IDW\Test.ipt")
 
         'Get "Inventor Summary Information" PropertySet
         Dim oPropertySet As PropertySet
@@ -123,7 +123,7 @@ Public Class Form1
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        saveToNewFile()
+        SaveToNewFile()
     End Sub
 
     Public Sub SaveToNewFile()
