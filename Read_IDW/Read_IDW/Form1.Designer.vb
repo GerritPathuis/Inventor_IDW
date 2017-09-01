@@ -85,11 +85,11 @@ Partial Class Form1
         '
         'Button6
         '
-        Me.Button6.Location = New System.Drawing.Point(40, 224)
+        Me.Button6.Location = New System.Drawing.Point(18, 224)
         Me.Button6.Name = "Button6"
-        Me.Button6.Size = New System.Drawing.Size(139, 23)
+        Me.Button6.Size = New System.Drawing.Size(173, 23)
         Me.Button6.TabIndex = 8
-        Me.Button6.Text = "Read Iproperties"
+        Me.Button6.Text = "Read Iproperties via Appentice"
         Me.Button6.UseVisualStyleBackColor = True
         '
         'Button8

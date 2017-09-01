@@ -78,34 +78,41 @@ Public Class Form1
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        'Read Iproperty
+        'Read Iproperty trough apprentice
 
         ' Create Apprentice.
-        Dim oApprentice As ApprenticeServerComponent
-        oApprentice = New ApprenticeServerComponent
+        Dim invApprentice As ApprenticeServerComponent
+        invApprentice = New ApprenticeServerComponent
 
         ' Open a document.
-        Dim oDoc As ApprenticeServerDocument
-        oDoc = oApprentice.Open("C:\Repos\Inventor_IDW\Read_IDW\Part.ipt")
-        MessageBox.Show("Opened: " & oDoc.DisplayName)
+        Dim invDoc As ApprenticeServerDocument
+        invDoc = invApprentice.Open("C:\Repos\Inventor_IDW\Read_IDW\Part.ipt")
+        MessageBox.Show("Opened: " & invDoc.DisplayName)
 
         ' Get the PropertySets object. 
         Dim oPropSets As PropertySets
-        oPropSets = oDoc.PropertySets
+        oPropSets = invDoc.PropertySets
 
         ' Get the design tracking property set. 
         Dim oPropSet As Inventor.PropertySet
-        oPropSet = oPropSets.PropertySet.Item("Design Tracking Properties")
+        'oPropSet = oPropSets.PropertySet.Item("Design Tracking Properties")
+        oPropSet = invDoc.oPropSets.Item("Design Tracking Properties").item("Part Number")
 
-        ' Get the part number iProperty. 
+        ' Get the part number iProperty.
+
         'Dim oPartNumiProp As PropertySet
-        Dim partn As String
+        'Dim partn As String
 
         'oPartNumiProp = oPropSet.Item("Part Number").ToString
-        partn = oPropSet.Item("Part Number").ToString
+        'partn = oPropSet.Item("Part Number").ToString
 
         ' Display the value. 
-        'TextBox3.Text = "The part number is: " & oPartNumiProp.Value
+        TextBox3.Text = "The part number is: " & oPropSet.Value
+
+        'Close everything
+        invDoc = Nothing
+        invApprentice.Close()
+        invApprentice = Nothing
     End Sub
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
         'Set Iproperty (Inventor does NOT run)
@@ -122,10 +129,21 @@ Public Class Form1
 
         'Get "Inventor Summary Information" PropertySet
         Dim oPropertySet As PropertySet
-        oPropertySet = oApprenticeDoc.PropertySets("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}")
+        'oPropertySet = oApprenticeDoc.PropertySets("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}")
+        oPropertySet = oApprenticeDoc.PropertySets("Inventor Summary Information")
+        'oPropertySet = oApprenticeDoc.PropertySets("Inventor Document Summary Information")
+        'oPropertySet = oApprenticeDoc.PropertySets("Design Tracking Properties")
+        'oPropertySet = oApprenticeDoc.PropertySets("User Defined Properties")
 
         'Get Author property
-        Dim oProperty As [Property] = oPropertySet.Item("Author")
+        'Dim oProperty As [Property] = oPropertySet.Item("Title")           'id=2
+        'Dim oProperty As [Property] = oPropertySet.Item("Subject")         'id=3
+        Dim oProperty As [Property] = oPropertySet.Item("Author")           'id=4
+        'Dim oProperty As [Property] = oPropertySet.Item("Keywords")        'id=5
+        'Dim oProperty As [Property] = oPropertySet.Item("Comments")        'id=6
+        'Dim oProperty As [Property] = oPropertySet.Item("Last Saved By")   'id=8
+        'Dim oProperty As [Property] = oPropertySet.Item("Revision Number") 'id=9
+
         oProperty.Value = author
 
         oApprenticeDoc.PropertySets.FlushToFile()
@@ -143,23 +161,20 @@ Public Class Form1
         '    ' Open a part
         '    Dim appDoc As ApprenticeServerDocument
         '    appDoc = apprentice.Open("C:\Repositories\Inventor_IDW\Test.ipt")
-        Dim filepath1 As String = "C:\Repositories\Inventor_IDW\Test_Copy.ipt"
-        Dim filepath2 As String = "C:\Repositories\Inventor_IDW\Test_Copy_update1.ipt"
+        Dim filepath1 As String = "C:\Repositories\Inventor_IDW\Part.ipt"
+        Dim filepath2 As String = "C:\Repositories\Inventor_IDW\Part_Copy_update1.ipt"
 
+        Dim apprentice As New ApprenticeServerComponent()
 
-        Dim apprentice As ApprenticeServerComponent
-        apprentice = New ApprenticeServerComponent
-
-        'Open part
-        Dim appDoc As ApprenticeServerDocument
-        appDoc = apprentice.Open(filepath1)
-
-        ' Save the file to a new name
         Try
-            Dim myFileSaveAs As FileSaveAs
-            myFileSaveAs = apprentice.FileSaveAs
+            'Open part
+            Dim appDoc As ApprenticeServerDocument = apprentice.Open(filepath1)
+
+            ' Save the file to a new name
+            Dim myFileSaveAs As FileSaveAs = apprentice.FileSaveAs
 
             myFileSaveAs.AddFileToSave(appDoc, filepath2)
+
             myFileSaveAs.ExecuteSaveCopyAs()
             appDoc.Close()
 
@@ -169,7 +184,6 @@ Public Class Form1
             If (attr And FileAttributes.ReadOnly) > 0 Then
                 MessageBox.Show("The file is read-only.")
             End If
-
         End Try
     End Sub
 
