@@ -60,12 +60,21 @@ Public Class Form1
     'http://modthemachine.typepad.com/my_weblog/2010/02/accessing-iproperties.html
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Dim information As System.IO.FileInfo
-        information = My.Computer.FileSystem.GetFileInfo("C:\Repositories\Inventor_IDW\VTKE-155000.idw")
+        information = My.Computer.FileSystem.GetFileInfo("C:\Repos\Inventor_IDW\Read_IDW\Part.ipt")
 
         TextBox2.Clear()
-        TextBox2.Text &= "Name is " & information.FullName & vbCrLf
-        TextBox2.Text &= "Last access time is " & information.LastAccessTime & vbCrLf
-        TextBox2.Text &= "The length is " & information.Length
+        TextBox2.Text &= "Name= " & information.FullName & vbCrLf
+        TextBox2.Text &= "Last access time= " & information.LastAccessTime.ToString & vbCrLf
+        TextBox2.Text &= "Last write time= " & information.LastWriteTime.ToString & vbCrLf
+        TextBox2.Text &= "Length= " & information.Length & vbCrLf
+        TextBox2.Text &= "Creation time= " & information.CreationTime & vbCrLf
+        TextBox2.Text &= "Attributes no= " & information.Attributes & vbCrLf
+        TextBox2.Text &= "File extension= " & information.Extension & vbCrLf
+        TextBox2.Text &= "File exists= " & information.Exists & vbCrLf
+        TextBox2.Text &= "Directory= " & information.Directory.ToString & vbCrLf
+        TextBox2.Text &= "Directory_name= " & information.DirectoryName.ToString & vbCrLf
+        TextBox2.Text &= "Read only= " & information.IsReadOnly.ToString & vbCrLf
+
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
@@ -77,21 +86,23 @@ Public Class Form1
 
         ' Open a document.
         Dim oDoc As ApprenticeServerDocument
-        oDoc = oApprentice.Open("C:\Repositories\Inventor_IDW\Test.ipt")
-        MsgBox("Opened: " & oDoc.DisplayName)
+        oDoc = oApprentice.Open("C:\Repos\Inventor_IDW\Read_IDW\Part.ipt")
+        MessageBox.Show("Opened: " & oDoc.DisplayName)
 
         ' Get the PropertySets object. 
         Dim oPropSets As PropertySets
         oPropSets = oDoc.PropertySets
 
         ' Get the design tracking property set. 
-        Dim oPropSet As PropertySet
-        oPropSet = oPropSets.Item("Design Tracking Properties")
+        Dim oPropSet As Inventor.PropertySet
+        oPropSet = oPropSets.PropertySet.Item("Design Tracking Properties")
 
         ' Get the part number iProperty. 
-        ' Dim oPartNumiProp As PropertySet
+        'Dim oPartNumiProp As PropertySet
+        Dim partn As String
 
-        'oPartNumiProp = CType(oPropSet.Item("Part Number"), PropertySet)
+        'oPartNumiProp = oPropSet.Item("Part Number").ToString
+        partn = oPropSet.Item("Part Number").ToString
 
         ' Display the value. 
         'TextBox3.Text = "The part number is: " & oPartNumiProp.Value
@@ -107,7 +118,7 @@ Public Class Form1
         mApprenticeserver = New ApprenticeServerComponent
 
         Dim oApprenticeDoc As ApprenticeServerDocument
-        oApprenticeDoc = mApprenticeserver.Open("C:\Repositories\Inventor_IDW\Test.ipt")
+        oApprenticeDoc = mApprenticeserver.Open("C:\Repos\Inventor_IDW\Read_IDW\Part.ipt")
 
         'Get "Inventor Summary Information" PropertySet
         Dim oPropertySet As PropertySet

@@ -69,7 +69,8 @@ Partial Class Form1
         Me.TextBox2.Location = New System.Drawing.Point(12, 128)
         Me.TextBox2.Multiline = True
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(531, 66)
+        Me.TextBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TextBox2.Size = New System.Drawing.Size(531, 76)
         Me.TextBox2.TabIndex = 6
         Me.TextBox2.Tag = "File info"
         '
@@ -86,9 +87,9 @@ Partial Class Form1
         '
         Me.Button6.Location = New System.Drawing.Point(40, 224)
         Me.Button6.Name = "Button6"
-        Me.Button6.Size = New System.Drawing.Size(75, 23)
+        Me.Button6.Size = New System.Drawing.Size(139, 23)
         Me.Button6.TabIndex = 8
-        Me.Button6.Text = "Button6"
+        Me.Button6.Text = "Read Iproperties"
         Me.Button6.UseVisualStyleBackColor = True
         '
         'Button8
