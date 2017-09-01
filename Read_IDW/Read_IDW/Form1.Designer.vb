@@ -98,7 +98,7 @@ Partial Class Form1
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(143, 23)
         Me.Button8.TabIndex = 10
-        Me.Button8.Text = "Change Iproperty ""auther"""
+        Me.Button8.Text = "Change Iproperty ""author"""
         Me.Button8.UseVisualStyleBackColor = True
         '
         'Button3

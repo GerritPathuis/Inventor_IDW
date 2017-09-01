@@ -8,19 +8,25 @@ Public Class Form1
     'Dim mCurrentDoc As ApprenticeServerDocument
     'Dim mCurrentDrawingDoc As ApprenticeServerDrawingDocument
 
+
+    Dim filepath1 As String = "C:\Repos\Inventor_IDW\Read_IDW\Part.ipt"
+    Dim filepath2 As String = "C:\Repos\Inventor_IDW\READ_IDW\Part_Copy_update1.ipt"
+    Dim filepath3 As String = "c:\MyDir"
+
+
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         'Directory create and delete
-        Dim path As String = "c:\MyDir"
+
         Try
             ' Determine whether the directory exists.
-            If Directory.Exists(path) Then
+            If Directory.Exists(filepath3) Then
                 MessageBox.Show("That path exists already.")
                 Return
             End If
 
             ' Try to create the directory.
-            Dim di As DirectoryInfo = Directory.CreateDirectory(path)
-            MessageBox.Show("The directory was created successfully at " & Directory.GetCreationTime(path))
+            Dim di As DirectoryInfo = Directory.CreateDirectory(filepath3)
+            MessageBox.Show("The directory was created successfully at " & Directory.GetCreationTime(filepath3))
 
             ' Delete the directory.
             di.Delete()
@@ -60,7 +66,7 @@ Public Class Form1
     'http://modthemachine.typepad.com/my_weblog/2010/02/accessing-iproperties.html
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Dim information As System.IO.FileInfo
-        information = My.Computer.FileSystem.GetFileInfo("C:\Repos\Inventor_IDW\Read_IDW\Part.ipt")
+        information = My.Computer.FileSystem.GetFileInfo(filepath1)
 
         TextBox2.Clear()
         TextBox2.Text &= "Name= " & information.FullName & vbCrLf
@@ -86,28 +92,18 @@ Public Class Form1
 
         ' Open a document.
         Dim invDoc As ApprenticeServerDocument
-        invDoc = invApprentice.Open("C:\Repos\Inventor_IDW\Read_IDW\Part.ipt")
+        invDoc = invApprentice.Open(filepath1)
         MessageBox.Show("Opened: " & invDoc.DisplayName)
 
-        ' Get the PropertySets object. 
-        Dim oPropSets As PropertySets
-        oPropSets = invDoc.PropertySets
-
         ' Get the design tracking property set. 
-        Dim oPropSet As Inventor.PropertySet
-        'oPropSet = oPropSets.PropertySet.Item("Design Tracking Properties")
-        oPropSet = invDoc.oPropSets.Item("Design Tracking Properties").item("Part Number")
+        Dim invDesigninfo As Inventor.PropertySet
+        invDesigninfo = invDoc.PropertySets.Item("Design Tracking Properties")
 
-        ' Get the part number iProperty.
-
-        'Dim oPartNumiProp As PropertySet
-        'Dim partn As String
-
-        'oPartNumiProp = oPropSet.Item("Part Number").ToString
-        'partn = oPropSet.Item("Part Number").ToString
+        Dim invPartNumberProperty As Inventor.Property
+        invPartNumberProperty = invDesigninfo.Item("Part Number")
 
         ' Display the value. 
-        TextBox3.Text = "The part number is: " & oPropSet.Value
+        TextBox3.Text = "The part number is: " & invPartNumberProperty.Value
 
         'Close everything
         invDoc = Nothing
@@ -125,7 +121,7 @@ Public Class Form1
         mApprenticeserver = New ApprenticeServerComponent
 
         Dim oApprenticeDoc As ApprenticeServerDocument
-        oApprenticeDoc = mApprenticeserver.Open("C:\Repos\Inventor_IDW\Read_IDW\Part.ipt")
+        oApprenticeDoc = mApprenticeserver.Open(filepath1)
 
         'Get "Inventor Summary Information" PropertySet
         Dim oPropertySet As PropertySet
@@ -156,14 +152,6 @@ Public Class Form1
     End Sub
 
     Public Sub SaveToNewFile()
-        '    ' Create an instance of Apprentice.
-        '    Dim apprentice As New ApprenticeServerComponent
-        '    ' Open a part
-        '    Dim appDoc As ApprenticeServerDocument
-        '    appDoc = apprentice.Open("C:\Repositories\Inventor_IDW\Test.ipt")
-        Dim filepath1 As String = "C:\Repositories\Inventor_IDW\Part.ipt"
-        Dim filepath2 As String = "C:\Repositories\Inventor_IDW\Part_Copy_update1.ipt"
-
         Dim apprentice As New ApprenticeServerComponent()
 
         Try
