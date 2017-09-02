@@ -3,14 +3,8 @@ Imports Inventor
 
 
 Public Class Form1
-    'Private iProperties As Object
-    'Dim mApprenticeServer As ApprenticeServerComponent
-    'Dim mCurrentDoc As ApprenticeServerDocument
-    'Dim mCurrentDrawingDoc As ApprenticeServerDrawingDocument
-
-
     Dim filepath1 As String = "C:\Repos\Inventor_IDW\Read_IDW\Part.ipt"
-    Dim filepath2 As String = "C:\Repos\Inventor_IDW\READ_IDW\Part_Copy_update1.ipt"
+    Dim filepath2 As String = "C:\Repos\Inventor_IDW\READ_IDW\Part_Copy_update2.ipt"
     Dim filepath3 As String = "c:\MyDir"
 
 
@@ -41,8 +35,12 @@ Public Class Form1
         Dim myStream As Stream = Nothing
         Dim openFileDialog1 As New OpenFileDialog With {
             .InitialDirectory = "c:\",
-            .Filter = "idw files |*.idw",
-            .FilterIndex = 2,
+            .Filter = "Part File (*.ipt)|*.ipt" _
+            & "|Assembly File (*.iam)|*.iam" _
+            & "|Presentation File (*.ipn)|*.ipn" _
+            & "|Drawing File (*.idw)|*.idw" _
+            & "|Design element File (*.ide)|*.ide",
+            .FilterIndex = 1,                   ' *.ipt files
             .RestoreDirectory = True
         }
 
@@ -95,7 +93,7 @@ Public Class Form1
         invDoc = invApprentice.Open(filepath1)
         'MessageBox.Show("Opened: " & invDoc.DisplayName)
 
-        ' Get the design tracking property set. 
+        '== Get the design tracking property set. 
         Dim invDesigninfo As Inventor.PropertySet
         invDesigninfo = invDoc.PropertySets.Item("Design Tracking Properties")
         Dim invPartNumberProperty As Inventor.Property
@@ -115,7 +113,7 @@ Public Class Form1
         invPartNumberProperty = invDesigninfo.Item("Engineer")
         TextBox3.Text &= "Engineer: " & invPartNumberProperty.Value & vbCrLf
 
-        'Now switch to "Inventor Summary Information"
+        '== Now switch to "Inventor Summary Information"
         invDesigninfo = invDoc.PropertySets.Item("Inventor Summary Information")
         invPartNumberProperty = invDesigninfo.Item("Author")
         TextBox3.Text &= "Author: " & invPartNumberProperty.Value
@@ -167,6 +165,7 @@ Public Class Form1
 
     Public Sub SaveToNewFile()
         Dim apprentice As New ApprenticeServerComponent()
+
 
         Try
             'Open part
