@@ -79,31 +79,32 @@ Partial Class Form1
         Me.TextBox3.Location = New System.Drawing.Point(12, 256)
         Me.TextBox3.Multiline = True
         Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(531, 66)
+        Me.TextBox3.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TextBox3.Size = New System.Drawing.Size(189, 99)
         Me.TextBox3.TabIndex = 7
         Me.TextBox3.Tag = "File info"
         '
         'Button6
         '
-        Me.Button6.Location = New System.Drawing.Point(18, 224)
+        Me.Button6.Location = New System.Drawing.Point(12, 224)
         Me.Button6.Name = "Button6"
-        Me.Button6.Size = New System.Drawing.Size(173, 23)
+        Me.Button6.Size = New System.Drawing.Size(189, 23)
         Me.Button6.TabIndex = 8
         Me.Button6.Text = "Read Iproperties via Appentice"
         Me.Button6.UseVisualStyleBackColor = True
         '
         'Button8
         '
-        Me.Button8.Location = New System.Drawing.Point(213, 224)
+        Me.Button8.Location = New System.Drawing.Point(231, 224)
         Me.Button8.Name = "Button8"
-        Me.Button8.Size = New System.Drawing.Size(143, 23)
+        Me.Button8.Size = New System.Drawing.Size(239, 23)
         Me.Button8.TabIndex = 10
-        Me.Button8.Text = "Change Iproperty ""author"""
+        Me.Button8.Text = "Change Iproperty ""author"" via Apprentice"
         Me.Button8.UseVisualStyleBackColor = True
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(400, 224)
+        Me.Button3.Location = New System.Drawing.Point(360, 361)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(143, 23)
         Me.Button3.TabIndex = 11

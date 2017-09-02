@@ -93,17 +93,32 @@ Public Class Form1
         ' Open a document.
         Dim invDoc As ApprenticeServerDocument
         invDoc = invApprentice.Open(filepath1)
-        MessageBox.Show("Opened: " & invDoc.DisplayName)
+        'MessageBox.Show("Opened: " & invDoc.DisplayName)
 
         ' Get the design tracking property set. 
         Dim invDesigninfo As Inventor.PropertySet
         invDesigninfo = invDoc.PropertySets.Item("Design Tracking Properties")
-
         Dim invPartNumberProperty As Inventor.Property
-        invPartNumberProperty = invDesigninfo.Item("Part Number")
 
-        ' Display the value. 
-        TextBox3.Text = "The part number is: " & invPartNumberProperty.Value
+        invPartNumberProperty = invDesigninfo.Item("Part Number")
+        TextBox3.Text = "The part number is: " & invPartNumberProperty.Value & vbCrLf
+
+        invPartNumberProperty = invDesigninfo.Item("Project")
+        TextBox3.Text &= "Project: " & invPartNumberProperty.Value & vbCrLf
+
+        invPartNumberProperty = invDesigninfo.Item("Checked By")
+        TextBox3.Text &= "Checked By: " & invPartNumberProperty.Value & vbCrLf
+
+        invPartNumberProperty = invDesigninfo.Item("Description")
+        TextBox3.Text &= "Description: " & invPartNumberProperty.Value & vbCrLf
+
+        invPartNumberProperty = invDesigninfo.Item("Engineer")
+        TextBox3.Text &= "Engineer: " & invPartNumberProperty.Value & vbCrLf
+
+        'Now switch to "Inventor Summary Information"
+        invDesigninfo = invDoc.PropertySets.Item("Inventor Summary Information")
+        invPartNumberProperty = invDesigninfo.Item("Author")
+        TextBox3.Text &= "Author: " & invPartNumberProperty.Value
 
         'Close everything
         invDoc = Nothing
@@ -125,7 +140,6 @@ Public Class Form1
 
         'Get "Inventor Summary Information" PropertySet
         Dim oPropertySet As PropertySet
-        'oPropertySet = oApprenticeDoc.PropertySets("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}")
         oPropertySet = oApprenticeDoc.PropertySets("Inventor Summary Information")
         'oPropertySet = oApprenticeDoc.PropertySets("Inventor Document Summary Information")
         'oPropertySet = oApprenticeDoc.PropertySets("Design Tracking Properties")
