@@ -1,12 +1,10 @@
 ﻿Imports System.IO
 Imports Inventor
 
-
 Public Class Form1
     Dim filepath1 As String = "C:\Repos\Inventor_IDW\Read_IDW\Part.ipt"
     Dim filepath2 As String = "C:\Repos\Inventor_IDW\READ_IDW\Part_update2.ipt"
     Dim filepath3 As String = "c:\MyDir"
-
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         'Directory create and delete
