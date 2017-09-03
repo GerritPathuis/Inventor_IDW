@@ -80,7 +80,7 @@ Public Class Form1
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        'Read Iproperty trough apprentice
+        'Read Iproperty via apprentice
 
         ' Create Apprentice.
         Dim invApprentice As ApprenticeServerComponent
@@ -179,10 +179,10 @@ Public Class Form1
 
 
         Try
-        ' Save the file to a new name
-        Dim myFileSaveAs As FileSaveAs = mApprenticeserver.FileSaveAs   'Loopt hier vast!!
+            ' Save the file to a new name
+            Dim myFileSaveAs As FileSaveAs = mApprenticeserver.FileSaveAs   'Loopt hier vast!!
 
-        myFileSaveAs.AddFileToSave(appDoc, filepath2)
+            myFileSaveAs.AddFileToSave(AppDoc, filepath2)
 
             myFileSaveAs.ExecuteSaveCopyAs()
             appDoc.Close()
@@ -198,9 +198,11 @@ Public Class Form1
             ' Get the Inventor Application object.
             Dim invApp As Inventor.Application
             invApp = CType(GetObject(, "Inventor.Application"), Application)
-            ' Get the active document.
+
+            ' Open a document on disk
             Dim doc As Inventor.Document
-            doc = invApp.ActiveDocument
+            doc = invApp.Documents.Open(filepath1, False)
+
             ' Get the "Design Tracking Properties" property set.
             Dim designTrackPropSet As Inventor.PropertySet
             designTrackPropSet = doc.PropertySets.Item("Design Tracking Properties")
@@ -208,36 +210,38 @@ Public Class Form1
             ' Get the "Description" property from the property set.
             Dim descProp As Inventor.Property
             descProp = designTrackPropSet.Item("Description")
-            ' Set the value of the property using the current value of the text box.
-            MessageBox.Show(descProp.ToString)
-            descProp.Value = TextBox5.Text
-            ' Get the "Part Number" property from the property set.
 
+            ' Set the value of the property using the current value of the text box.
+            MessageBox.Show(descProp.Value.ToString)
+            descProp.Value = TextBox5.Text
+
+            ' Get the "Part Number" property from the property set.
             Dim partNumProp As Inventor.Property
             partNumProp = designTrackPropSet.Item("Part Number")
             ' Set the value of the property using the current value of the text box.
             partNumProp.Value = TextBox4.Text
+            doc.Save()
+            doc.Close(False)
         Else
-            MsgBox("Inventor is nog niet gestart" & vbCr & "Start Inventor en selecteer een ipt file" & vbCr & vbCr, MsgBoxStyle.Critical, "..")
+            MessageBox.Show("Inventor is nog niet gestart")
         End If
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
 
-        'Inventor moet open zijn men het document geselecteerd, dit werkt.
+        'Inventor moet open zijn, dit werkt.
         If GetInventorApplication() Then
 
             Dim invDoc As Inventor.Document
             Dim invApp As Inventor.Application
             invApp = CType(GetObject(, "Inventor.Application"), Application)
 
-            ' Get the active document.
-            invDoc = invApp.ActiveDocument
+            ' Open a document on disk
+            invDoc = invApp.Documents.Open(filepath1, False)
 
             'Get "Inventor Summary Information" PropertySet
             Dim invCustomPropertySet As PropertySet
             invCustomPropertySet = invDoc.PropertySets.Item("Inventor User Defined Properties")
-
 
             'Declare properties
             Dim strText As String = "fannnn"
@@ -247,14 +251,17 @@ Public Class Form1
 
             'Create properties
             Dim invProperty As Inventor.Property
-            invProperty = invCustomPropertySet.Add(strText, "Test test")
-            invProperty = invCustomPropertySet.Add(dblValue, "Test value")
-            invProperty = invCustomPropertySet.Add(dtDate, "Test Date")
-            invProperty = invCustomPropertySet.Add(blYesOrNo, "Test Yes or No")
-
-            MessageBox.Show("Iproperty Author is changed ")
+            Try
+                invProperty = invCustomPropertySet.Add(strText, "Test test")
+                invProperty = invCustomPropertySet.Add(dblValue, "Test value")
+                invProperty = invCustomPropertySet.Add(dtDate, "Test Date")
+                invProperty = invCustomPropertySet.Add(blYesOrNo, "Test Yes or No")
+                MessageBox.Show("Iproperty Author is changed ")
+            Catch ee As Exception
+                MessageBox.Show("Properties already exist..")
+            End Try
         Else
-            MsgBox("Inventor is nog niet gestart" & vbCr & "Start Inventor en selecteer een ipt file" & vbCr & vbCr, MsgBoxStyle.Critical, "..")
+            MessageBox.Show("Inventor is nog niet gestart")
         End If
     End Sub
 
@@ -267,7 +274,6 @@ Public Class Form1
 
         Return True
     End Function
-
 
 End Class
 
