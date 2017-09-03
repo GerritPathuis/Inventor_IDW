@@ -34,6 +34,7 @@ Partial Class Form1
         Me.TextBox4 = New System.Windows.Forms.TextBox()
         Me.TextBox5 = New System.Windows.Forms.TextBox()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Button7 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -104,7 +105,7 @@ Partial Class Form1
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(360, 361)
+        Me.Button3.Location = New System.Drawing.Point(231, 256)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(143, 23)
         Me.Button3.TabIndex = 11
@@ -148,11 +149,21 @@ Partial Class Form1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Set Iproperties"
         '
+        'Button7
+        '
+        Me.Button7.Location = New System.Drawing.Point(231, 308)
+        Me.Button7.Name = "Button7"
+        Me.Button7.Size = New System.Drawing.Size(195, 26)
+        Me.Button7.TabIndex = 16
+        Me.Button7.Text = "Create Iproperty ""Fan type"""
+        Me.Button7.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(580, 544)
+        Me.Controls.Add(Me.Button7)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button8)
@@ -183,4 +194,5 @@ Partial Class Form1
     Friend WithEvents TextBox4 As TextBox
     Friend WithEvents TextBox5 As TextBox
     Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents Button7 As Button
 End Class
