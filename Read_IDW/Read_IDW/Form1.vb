@@ -46,12 +46,14 @@ Public Class Form1
         If openFileDialog1.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Try
                 filepath1 = openFileDialog1.FileName
+                TextBox6.Text = filepath1.ToString
             Catch Ex As Exception
                 MessageBox.Show("Cannot read file from disk. Original error: " & Ex.Message)
             Finally
             End Try
         End If
-        MessageBox.Show(filepath1.ToString)
+
+
     End Sub
 
     'http://modthemachine.typepad.com/my_weblog/2010/02/accessing-iproperties.html
@@ -187,8 +189,8 @@ Public Class Form1
             myFileSaveAs.ExecuteSaveCopyAs()
             appDoc.Close()
         Catch ex As Exception
-        Dim attr As FileAttributes = (New FileInfo(filepath1)).Attributes
-        MessageBox.Show(String.Format("Error: {0}", ex.Message))
+            Dim attr As FileAttributes = (New FileInfo(filepath1)).Attributes
+            MessageBox.Show(String.Format("Error: {0}", ex.Message))
         End Try
     End Sub
 
@@ -311,17 +313,70 @@ Public Class Form1
     End Sub
 
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
+        Dim invPartDoc As Inventor.PartDocument
+        Dim invApp As Inventor.Application
 
+        invApp = CType(GetObject(, "Inventor.Application"), Application)
+        invPartDoc = CType(invApp.Documents.Open(filepath1, False), PartDocument)
+
+        TextBox1.Clear()
+        ' Get the volume of the part. This will be returned in
+        ' cubic centimeters.
+        Dim dVolume As Double
+        dVolume = invPartDoc.ComponentDefinition.MassProperties.Volume
+        TextBox1.Text = "Volume is " & dVolume.ToString & vbCrLf
+
+        ' Get the UnitsOfMeasure object which is used to do unit conversions.
+        Dim oUOM As UnitsOfMeasure
+        oUOM = invPartDoc.UnitsOfMeasure
+        TextBox1.Text &= "Units are " & oUOM.GetStringFromType(oUOM.LengthUnits).ToString & vbCrLf
+
+        '------------------------ 
+        ' Convert the volume to the current document units.
+        Dim str As String
+        str = oUOM.GetStringFromValue(dVolume, oUOM.GetStringFromType(oUOM.LengthUnits) & "^3")
+        TextBox1.Text &= "Volume is " & str.ToString & vbCrLf
+
+        '------------------------ 
+        ' Get the part number property 
+        'see http://modthemachine.typepad.com/my_weblog/2010/02/accessing-iproperties.html
+        Dim invP As Inventor.Property
+        invP = invPartDoc.PropertySets.Item("Design Tracking Properties").Item("Part Number")
+        TextBox1.Text &= "Part number is " & invP.Value.ToString & vbCrLf
+
+        '------------------------ 
+        ' Get the part number property 
+        Dim inv As Inventor.Property
+        inv = invPartDoc.PropertySets.Item("Design Tracking Properties").Item("Project")
+        TextBox1.Text &= "Project is " & inv.Value.ToString & vbCrLf
+    End Sub
+
+    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
+        TestiPropertyUpdate()
+    End Sub
+    Private Sub TestiPropertyUpdate()
+        'see http://modthemachine.typepad.com/my_weblog/2010/02/custom-iproperties.html
+        ' Connect to a running instance of Inventor. 
+        ' Watch out for the wrapped line. 
         Dim invApp As Inventor.Application
         invApp = CType(System.Runtime.InteropServices.Marshal.GetActiveObject("Inventor.Application"), Application)
 
+        ' Get the active document. 
         Dim Doc As Inventor.Document
-        Doc = invApp.ActiveDocument
+        Doc = CType(invApp.Documents.Open(filepath1, False), Document)
 
-        'UpdateCustomiProperty(Doc, "MYPROPERTY", TextBox1.Text)
+        TextBox1.Clear()
+        ' Update or create the custom iProperty. 
+        'UpdateCustomiProperty(Doc, "DOC_NUMBER", "D12345")
+        ShowCustomiProperty(Doc, "DOC_NUMBER")
+        ShowCustomiProperty(Doc, "ITEM_NR")
+        ShowCustomiProperty(Doc, "DOC_REV")
+        ShowCustomiProperty(Doc, "DOC_STATUS")
+        ShowCustomiProperty(Doc, "Thickness")
+        ShowCustomiProperty(Doc, "PART_MATERIAL")
+    End Sub
 
-        Doc.Update()
-
+    Private Sub UpdateCustomiProperty(ByRef Doc As Inventor.Document, ByRef PropertyName As String, ByRef PropertyValue As Object)
         ' Get the custom property set. 
         Dim customPropSet As Inventor.PropertySet
         customPropSet = Doc.PropertySets.Item("Inventor User Defined Properties")
@@ -330,19 +385,45 @@ Public Class Form1
         Dim prop As Inventor.Property = Nothing
         Dim propExists As Boolean = True
         Try
-            ' prop = customPropSet.Item(PropertyName)
+            prop = customPropSet.Item(PropertyName)
         Catch ex As Exception
             propExists = False
         End Try
 
         ' Check to see if the property was successfully obtained. 
         If Not propExists Then
-            ' Failed to get the existing property so create a new one. 
-            prop = customPropSet.Add(PropertyValue, PropertyName)
+            MessageBox.Show("Property not found, create new one")
+            'prop = customPropSet.Add(PropertyValue, PropertyName)
         Else
             ' Change the value of the existing property. 
-            prop.Value = PropertyValue
+            'prop.Value = PropertyValue
+            TextBox1.Text &= "Property value is " & prop.Value & vbCrLf
         End If
+    End Sub
+
+    Private Sub ShowCustomiProperty(ByRef Doc As Inventor.Document, ByRef PropertyName As String)
+        ' Get the custom property set. 
+        Dim customPropSet As Inventor.PropertySet
+        customPropSet = Doc.PropertySets.Item("Inventor User Defined Properties")
+
+        ' Get the existing property, if it exists. 
+        Dim prop As Inventor.Property = Nothing
+        Dim propExists As Boolean = True
+        Try
+            prop = customPropSet.Item(PropertyName)
+        Catch ex As Exception
+            propExists = False
+        End Try
+
+        ' Check to see if the property was successfully obtained. 
+        If propExists Then
+            TextBox1.Text &= "Property value is " & prop.Value & vbCrLf
+        End If
+    End Sub
+
+    Private Sub Form1_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+        System.GC.WaitForPendingFinalizers()
+        System.GC.Collect()
     End Sub
 End Class
 
