@@ -32,10 +32,15 @@ Partial Class Form1
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button5 = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.Button7 = New System.Windows.Forms.Button()
-        Me.TextBox4 = New System.Windows.Forms.TextBox()
         Me.TextBox5 = New System.Windows.Forms.TextBox()
+        Me.TextBox4 = New System.Windows.Forms.TextBox()
+        Me.Button7 = New System.Windows.Forms.Button()
+        Me.Button9 = New System.Windows.Forms.Button()
+        Me.Button10 = New System.Windows.Forms.Button()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.GroupBox1.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'Button1
@@ -53,7 +58,7 @@ Partial Class Form1
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(209, 30)
         Me.Button2.TabIndex = 2
-        Me.Button2.Text = "Open file"
+        Me.Button2.Text = "Open ipt file"
         Me.Button2.UseVisualStyleBackColor = True
         '
         'Button4
@@ -81,7 +86,7 @@ Partial Class Form1
         Me.TextBox3.Multiline = True
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBox3.Size = New System.Drawing.Size(271, 99)
+        Me.TextBox3.Size = New System.Drawing.Size(271, 259)
         Me.TextBox3.TabIndex = 7
         Me.TextBox3.Tag = "File info"
         '
@@ -126,30 +131,12 @@ Partial Class Form1
         Me.GroupBox1.Controls.Add(Me.TextBox5)
         Me.GroupBox1.Controls.Add(Me.Button5)
         Me.GroupBox1.Controls.Add(Me.TextBox4)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 361)
+        Me.GroupBox1.Location = New System.Drawing.Point(304, 371)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(271, 117)
         Me.GroupBox1.TabIndex = 15
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Set Iproperties"
-        '
-        'Button7
-        '
-        Me.Button7.Location = New System.Drawing.Point(304, 285)
-        Me.Button7.Name = "Button7"
-        Me.Button7.Size = New System.Drawing.Size(195, 26)
-        Me.Button7.TabIndex = 16
-        Me.Button7.Text = "Create Extra Iproperties "
-        Me.Button7.UseVisualStyleBackColor = True
-        '
-        'TextBox4
-        '
-        Me.TextBox4.Location = New System.Drawing.Point(6, 48)
-        Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBox4.Size = New System.Drawing.Size(245, 20)
-        Me.TextBox4.TabIndex = 13
-        Me.TextBox4.Text = "New part nummer"
         '
         'TextBox5
         '
@@ -160,11 +147,69 @@ Partial Class Form1
         Me.TextBox5.TabIndex = 14
         Me.TextBox5.Text = "New descriptiom"
         '
+        'TextBox4
+        '
+        Me.TextBox4.Location = New System.Drawing.Point(6, 48)
+        Me.TextBox4.Name = "TextBox4"
+        Me.TextBox4.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TextBox4.Size = New System.Drawing.Size(245, 20)
+        Me.TextBox4.TabIndex = 13
+        Me.TextBox4.Text = "New part nummer"
+        '
+        'Button7
+        '
+        Me.Button7.Location = New System.Drawing.Point(304, 285)
+        Me.Button7.Name = "Button7"
+        Me.Button7.Size = New System.Drawing.Size(195, 26)
+        Me.Button7.TabIndex = 16
+        Me.Button7.Text = "Create Extra Iproperties "
+        Me.Button7.UseVisualStyleBackColor = True
+        '
+        'Button9
+        '
+        Me.Button9.Location = New System.Drawing.Point(304, 317)
+        Me.Button9.Name = "Button9"
+        Me.Button9.Size = New System.Drawing.Size(195, 26)
+        Me.Button9.TabIndex = 17
+        Me.Button9.Text = "Create DXF file"
+        Me.Button9.UseVisualStyleBackColor = True
+        '
+        'Button10
+        '
+        Me.Button10.Location = New System.Drawing.Point(33, 42)
+        Me.Button10.Name = "Button10"
+        Me.Button10.Size = New System.Drawing.Size(143, 23)
+        Me.Button10.TabIndex = 18
+        Me.Button10.Text = "inv app"
+        Me.Button10.UseVisualStyleBackColor = True
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.TextBox1)
+        Me.GroupBox2.Controls.Add(Me.Button10)
+        Me.GroupBox2.Location = New System.Drawing.Point(626, 50)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(243, 277)
+        Me.GroupBox2.TabIndex = 19
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "GroupBox2"
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(27, 78)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TextBox1.Size = New System.Drawing.Size(149, 20)
+        Me.TextBox1.TabIndex = 15
+        Me.TextBox1.Text = "New part nummer"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(580, 544)
+        Me.ClientSize = New System.Drawing.Size(910, 544)
+        Me.Controls.Add(Me.GroupBox2)
+        Me.Controls.Add(Me.Button9)
         Me.Controls.Add(Me.Button7)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Button3)
@@ -176,9 +221,11 @@ Partial Class Form1
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
         Me.Name = "Form1"
-        Me.Text = "Form1"
+        Me.Text = "Read ipt"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -197,4 +244,8 @@ Partial Class Form1
     Friend WithEvents Button7 As Button
     Friend WithEvents TextBox5 As TextBox
     Friend WithEvents TextBox4 As TextBox
+    Friend WithEvents Button9 As Button
+    Friend WithEvents Button10 As Button
+    Friend WithEvents GroupBox2 As GroupBox
+    Friend WithEvents TextBox1 As TextBox
 End Class
