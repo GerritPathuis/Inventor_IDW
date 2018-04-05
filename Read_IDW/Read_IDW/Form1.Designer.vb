@@ -193,18 +193,19 @@ Partial Class Form1
         Me.GroupBox2.Controls.Add(Me.Button10)
         Me.GroupBox2.Location = New System.Drawing.Point(581, 50)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(317, 465)
+        Me.GroupBox2.Size = New System.Drawing.Size(490, 465)
         Me.GroupBox2.TabIndex = 19
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Inventor must be open"
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(6, 48)
+        Me.TextBox1.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.TextBox1.Location = New System.Drawing.Point(3, 59)
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBox1.Size = New System.Drawing.Size(305, 390)
+        Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both
+        Me.TextBox1.Size = New System.Drawing.Size(484, 403)
         Me.TextBox1.TabIndex = 15
         Me.TextBox1.Text = "."
         '
@@ -221,9 +222,9 @@ Partial Class Form1
         '
         Me.Button11.Location = New System.Drawing.Point(587, 16)
         Me.Button11.Name = "Button11"
-        Me.Button11.Size = New System.Drawing.Size(121, 23)
+        Me.Button11.Size = New System.Drawing.Size(206, 23)
         Me.Button11.TabIndex = 19
-        Me.Button11.Text = "Get Profile info"
+        Me.Button11.Text = "Inventor User Defined Properties"
         Me.Button11.UseVisualStyleBackColor = True
         '
         'Button12
@@ -237,7 +238,7 @@ Partial Class Form1
         '
         'Button13
         '
-        Me.Button13.Location = New System.Drawing.Point(714, 16)
+        Me.Button13.Location = New System.Drawing.Point(799, 16)
         Me.Button13.Name = "Button13"
         Me.Button13.Size = New System.Drawing.Size(121, 23)
         Me.Button13.TabIndex = 21
@@ -248,7 +249,7 @@ Partial Class Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(910, 525)
+        Me.ClientSize = New System.Drawing.Size(1087, 525)
         Me.Controls.Add(Me.Button13)
         Me.Controls.Add(Me.Button12)
         Me.Controls.Add(Me.Button11)

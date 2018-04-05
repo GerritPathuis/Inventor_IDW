@@ -450,100 +450,12 @@ Public Class Form1
     End Sub
 
     Private Sub Button13_Click(sender As Object, e As EventArgs) Handles Button13.Click
-        'BOMQuery()
         Qbom()
-    End Sub
-    Public Sub BOMQuery()
-        ' Set a reference to the assembly document.
-        ' Get the active document. 
-        Dim invApp As Inventor.Application
-        invApp = CType(GetObject(, "Inventor.Application"), Application)
-        invApp.SilentOperation = vbTrue
-
-        Dim oDoc As Inventor.Document
-        oDoc = CType(invApp.Documents.Open(filepath1, False), Document)
-
-        Dim FirstLevelOnly As Boolean
-        If MsgBox("First level only?", vbYesNo) = vbYes Then
-            FirstLevelOnly = True
-        Else
-            FirstLevelOnly = False
-        End If
-
-        ' Set a reference to the BOM
-        Dim oBOM As BOM
-        Try
-            oBOM = oDoc.ComponentDefinition.BOM
-
-            ' Set whether first level only or all levels.
-            If FirstLevelOnly Then
-                oBOM.StructuredViewFirstLevelOnly = True
-            Else
-                oBOM.StructuredViewFirstLevelOnly = False
-            End If
-
-            ' Make sure that the structured view is enabled.
-            oBOM.StructuredViewEnabled = True
-
-            'Set a reference to the "Structured" BOMView
-            Dim oBOMView As BOMView
-            oBOMView = oBOM.BOMViews.Item("Structured")
-
-            Debug.Print("Item" & "Quantity" & "Part Number" & "Description")
-
-            'Initialize the tab for ItemNumber
-            Dim ItemTab As Long
-            ItemTab = -3
-            Call QueryBOMRowProperties(oBOMView.BOMRows, ItemTab)
-        Catch Ex As Exception
-            MessageBox.Show("No BOM in this drawing " & Ex.Message)
-        Finally
-
-        End Try
-    End Sub
-    'see https://knowledge.autodesk.com/search-result/caas/CloudHelp/cloudhelp/2018/ENU/Inventor-API/files/BOM-Sample-htm.html
-    Private Sub QueryBOMRowProperties(oBOMRows As BOMRowsEnumerator, ItemTab As Long)
-        ItemTab = ItemTab + 3
-        ' Iterate through the contents of the BOM Rows.
-        Dim i As Long
-        For i = 1 To oBOMRows.Count
-            ' Get the current row.
-            Dim oRow As BOMRow
-            oRow = oBOMRows.Item(i)
-
-            'Set a reference to the primary ComponentDefinition of the row
-            Dim oCompDef As ComponentDefinition
-            oCompDef = oRow.ComponentDefinitions.Item(1)
-
-            Dim oPartNumProperty As Inventor.Property
-            Dim oDescripProperty As Inventor.Property
-
-            If TypeOf oCompDef Is VirtualComponentDefinition Then
-                oPartNumProperty = oCompDef.PropertySets.Item("Design Tracking Properties").Item("Part Number")
-                oDescripProperty = oCompDef.PropertySets.Item("Design Tracking Properties").Item("Description")
-
-                TextBox1.Text &= "Item= " & oRow.ItemNumber & " Quantity= " & oRow.ItemQuantity & " Part no= " & oPartNumProperty.Value & " Descrip=" & oDescripProperty.Value
-            Else
-                'Get the file property that contains the "Part Number"
-                'The file property is obtained from the parent
-                'document of the associated ComponentDefinition.
-
-                oPartNumProperty = oCompDef.Document.PropertySets.Item("Design Tracking Properties").Item("Part Number")
-                oDescripProperty = oCompDef.Document.PropertySets.Item("Design Tracking Properties").Item("Description")
-
-                Debug.Print("oRow.ItemNumber & oRow.ItemQuantity & oPartNumProperty.Value & oDescripProperty.Value")
-                TextBox1.Text &= "Item" & oRow.ItemNumber & " Qty=" & oRow.ItemQuantity & " Partno= " & oPartNumProperty.Value & " Descrip= " & oDescripProperty.Value
-
-                'Recursively iterate child rows if present.
-                If Not oRow.ChildRows Is Nothing Then
-                    Call QueryBOMRowProperties(oRow.ChildRows, ItemTab)
-                End If
-            End If
-        Next
-        ItemTab = ItemTab - 3
     End Sub
 
     Private Sub Qbom()
+        TextBox1.Clear()
+
         Dim invApp As Inventor.Application
         invApp = CType(GetObject(, "Inventor.Application"), Application)
         invApp.SilentOperation = vbTrue
@@ -570,7 +482,16 @@ Public Class Form1
                 oCompDef = oRow.ComponentDefinitions.Item(1)
                 oPropSet = oCompDef.Document.PropertySets.Item("Design Tracking Properties")
 
-                TextBox1.Text &= "Item= " & oRow.ItemNumber & " Quantity=" & oRow.ItemQuantity & "Part: " & oPropSet.Item("Part Number").Value & " Desc: " & oPropSet.Item("Description").Value
+                TextBox1.Text &= "Item= " & oRow.ItemNumber & " Quantity=" & oRow.ItemQuantity
+                TextBox1.Text &= " Part= " & oPropSet.Item("Part Number").Value
+                TextBox1.Text &= " Desc= " & oPropSet.Item("Description").Value
+                TextBox1.Text &= " Stock= " & oPropSet.Item("Stock Number").Value & vbCrLf
+
+                oPropSet = oCompDef.Document.PropertySets.Item("Inventor User Defined Properties")
+                TextBox1.Text &= "Doc_nr= " & oPropSet.Item("DOC_NUMBER").Value
+                TextBox1.Text &= " Status= " & oPropSet.Item("DOC_STATUS").Value
+                TextBox1.Text &= " Doc_rev= " & oPropSet.Item("DOC_REV").Value
+                TextBox1.Text &= " Item_nr= " & oPropSet.Item("ITEM_NR").Value & vbCrLf
             Next
         Catch Ex As Exception
             MessageBox.Show("No BOM in this drawing " & Ex.Message)
