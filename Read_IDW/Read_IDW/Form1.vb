@@ -6,6 +6,8 @@ Public Class Form1
     Public filepath2 As String = "C:\Repos\Inventor_IDW\READ_IDW\Part_update2.ipt"
     Public filepath3 As String = "c:\MyDir"
     Public filepath4 As String = "C:\Temp\Flat_2.dxf"
+    Public filepath5 As String = "C:\Inventor_tst\Assembly1.idw"
+    Private thisdoc As Object
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         'Directory create and delete
@@ -500,6 +502,137 @@ Public Class Form1
         End Try
 
     End Sub
+    '-----------------------------
+    Public Function TitleBlockVersion(ByVal VersionNum As String) As Boolean
+        TitleBlockVersion = False
 
+        Dim invApp As Inventor.Application
+        invApp = CType(GetObject(, "Inventor.Application"), Application)
+        invApp.SilentOperation = vbTrue
+
+        'Dim oDrawDoc As DrawingDocument
+        Dim oDoc As Inventor.Document
+        oDrawDoc = CType(invApp.Documents.Open(filepath5, False), Document)
+
+
+        ' Create the new title block defintion.
+        Dim oTitleBlockDef As TitleBlockDefinition
+        On Error GoTo Errorhandler
+        oTitleBlockDef = oDrawDoc.TitleBlockDefinitions.Item("SMALL") ' this is our standard title block
+
+        Dim oSketch As DrawingSketch
+        Call oTitleBlockDef.Edit(oSketch)
+
+        Dim Counter As Integer
+        Dim Name As String
+        Dim VersionName As String
+        VersionName = "TITLE BLOCK VERSION: " & VersionNum
+
+        'Loop thru and find the approved by box
+        For Counter = 1 To oSketch.TextBoxes.Count
+            Name = oSketch.TextBoxes.Item(Counter).Text
+            If Name = VersionName Then
+                TitleBlockVersion = True
+            End If
+
+        Next Counter
+        Call oTitleBlockDef.ExitEdit(True)
+        Exit Function
+
+Errorhandler:
+        TitleBlockVersion = False
+        Exit Function
+
+    End Function
+
+
+    Public Sub TitleBlockCopy()
+
+        'Open Inventor
+        Dim oApp As Inventor.Application
+        oApp = CType(GetObject(, "Inventor.Application"), Application)
+        oApp.SilentOperation = vbTrue
+
+        'Open document
+        Dim oDoc As Inventor.Document
+        oCurrentDocument = CType(oApp.Documents.Open(filepath5, False), Document)
+        MessageBox.Show("Current 1 doc is " & oCurrentDocument.ActiveSheet.ToString)
+        MessageBox.Show("Current 2 doc is " & thisdoc.path)
+
+        'Check to see if the titleblock version is current
+        Dim Current As Boolean
+        Current = TitleBlockVersion("001")
+
+        ' quit if already current
+        If Current Then
+            Exit Sub
+        End If
+
+        MessageBox.Show("Template Standard.idw is stored at " & oApp.FileOptions.TemplatesPath)
+        Dim TemplatePath As String
+        TemplatePath = oApp.FileOptions.TemplatesPath & "Standard.idw"
+
+
+
+
+        'Set a reference to the document's active title block name
+        Dim TitleBlockName As String
+        TitleBlockName = oCurrentDocument.ActiveSheet.TitleBlock.Name
+
+        'Open the template file
+        Dim oTemplateDocument As Inventor.Document
+        oTemplateDocument = oCurrentDocument.Documents.Open(TemplatePath)
+
+        'oTemplateDocument = CType(oApp.Documents.Open(filepath1, False), Document)
+
+        'Check to see if the template has the same title block as the currentdocument
+        Dim RefTitleBlockDef As TitleBlockDefinition
+        Dim TitleBlockExists As Boolean
+        TitleBlockExists = False
+        For Each RefTitleBlockDef In oTemplateDocument.TitleBlockDefinitions
+            If RefTitleBlockDef.Name = TitleBlockName Then
+                TitleBlockExists = True
+                Debug.Print("Found Title Block")
+            End If
+        Next
+
+        If Not TitleBlockExists Then
+            TitleBlockName = "SMALL" ' this is our default title block
+        End If
+
+        ' Get the new source title block definition.
+        Dim oSourceTitleBlockDef As TitleBlockDefinition
+        oSourceTitleBlockDef = oTemplateDocument.TitleBlockDefinitions.Item(TitleBlockName)
+
+        'Wipe out any references to the existing title block
+        Dim oSheet As Sheet
+        oCurrentDocument.Activate()
+
+        For Each oSheet In oCurrentDocument.Sheets
+            oSheet.Activate()
+            On Error Resume Next
+            oSheet.TitleBlock.Delete()
+        Next
+
+        'Delete the existing titleblock
+        On Error Resume Next
+        oCurrentDocument.TitleBlockDefinitions.Item(TitleBlockName).Delete()
+
+        'Copy the Template Title Block to the current file
+        Dim oNewTitleBlockDef As TitleBlockDefinition
+        oNewTitleBlockDef = oSourceTitleBlockDef.CopyTo(oCurrentDocument)
+
+        oTemplateDocument.Close()
+
+        ' Iterate through the sheets.
+        For Each oSheet In oCurrentDocument.Sheets
+            oSheet.Activate()
+            Call oSheet.AddTitleBlock(oNewTitleBlockDef)
+        Next
+    End Sub
+
+    Private Sub Button14_Click(sender As Object, e As EventArgs) Handles Button14.Click
+        TitleBlockCopy()
+    End Sub
 End Class
 
