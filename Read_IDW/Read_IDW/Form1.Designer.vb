@@ -38,12 +38,13 @@ Partial Class Form1
         Me.Button9 = New System.Windows.Forms.Button()
         Me.Button10 = New System.Windows.Forms.Button()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Button14 = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.TextBox6 = New System.Windows.Forms.TextBox()
         Me.Button11 = New System.Windows.Forms.Button()
         Me.Button12 = New System.Windows.Forms.Button()
         Me.Button13 = New System.Windows.Forms.Button()
-        Me.Button14 = New System.Windows.Forms.Button()
+        Me.Button15 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
@@ -190,6 +191,7 @@ Partial Class Form1
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.Button15)
         Me.GroupBox2.Controls.Add(Me.Button14)
         Me.GroupBox2.Controls.Add(Me.TextBox1)
         Me.GroupBox2.Controls.Add(Me.Button10)
@@ -199,6 +201,15 @@ Partial Class Form1
         Me.GroupBox2.TabIndex = 19
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Inventor must be open"
+        '
+        'Button14
+        '
+        Me.Button14.Location = New System.Drawing.Point(166, 13)
+        Me.Button14.Name = "Button14"
+        Me.Button14.Size = New System.Drawing.Size(111, 29)
+        Me.Button14.TabIndex = 19
+        Me.Button14.Text = "idw Title block"
+        Me.Button14.UseVisualStyleBackColor = True
         '
         'TextBox1
         '
@@ -247,14 +258,14 @@ Partial Class Form1
         Me.Button13.Text = "Get BOM"
         Me.Button13.UseVisualStyleBackColor = True
         '
-        'Button14
+        'Button15
         '
-        Me.Button14.Location = New System.Drawing.Point(227, 19)
-        Me.Button14.Name = "Button14"
-        Me.Button14.Size = New System.Drawing.Size(173, 29)
-        Me.Button14.TabIndex = 19
-        Me.Button14.Text = "Title block"
-        Me.Button14.UseVisualStyleBackColor = True
+        Me.Button15.Location = New System.Drawing.Point(304, 13)
+        Me.Button15.Name = "Button15"
+        Me.Button15.Size = New System.Drawing.Size(159, 29)
+        Me.Button15.TabIndex = 20
+        Me.Button15.Text = "idw Title block overview"
+        Me.Button15.UseVisualStyleBackColor = True
         '
         'Form1
         '
@@ -310,4 +321,5 @@ Partial Class Form1
     Friend WithEvents Button12 As Button
     Friend WithEvents Button13 As Button
     Friend WithEvents Button14 As Button
+    Friend WithEvents Button15 As Button
 End Class

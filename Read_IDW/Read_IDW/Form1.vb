@@ -531,6 +531,8 @@ Public Class Form1
         'Loop thru and find the approved by box
         For Counter = 1 To oSketch.TextBoxes.Count
             Name = oSketch.TextBoxes.Item(Counter).Text
+            MessageBox.Show("Sketch Name is " & Name)
+
             If Name = VersionName Then
                 TitleBlockVersion = True
             End If
@@ -547,6 +549,7 @@ Errorhandler:
 
 
     Public Sub TitleBlockCopy()
+        TextBox1.Clear()
 
         'Open Inventor
         Dim oApp As Inventor.Application
@@ -556,8 +559,8 @@ Errorhandler:
         'Open document
         Dim oDoc As Inventor.Document
         oCurrentDocument = CType(oApp.Documents.Open(filepath5, False), Document)
-        MessageBox.Show("Current 1 doc is " & oCurrentDocument.ActiveSheet.TitleBlock.Name)
-        'MessageBox.Show("Current 2 doc is " & thisdoc.path)
+        TextBox1.Text &= "Current doc TitleBlock.Name is " & oCurrentDocument.ActiveSheet.TitleBlock.Name & vbCrLf
+
 
         'Check to see if the titleblock version is current
         Dim Current As Boolean
@@ -568,22 +571,18 @@ Errorhandler:
             Exit Sub
         End If
 
-        MessageBox.Show("Template Standard.idw is stored at " & oApp.FileOptions.TemplatesPath)
+        TextBox1.Text &= "Template Standard.idw is stored at " & oApp.FileOptions.TemplatesPath & vbCrLf
         Dim TemplatePath As String
         TemplatePath = oApp.FileOptions.TemplatesPath & "Standard.idw"
-
-
-
 
         'Set a reference to the document's active title block name
         Dim TitleBlockName As String
         TitleBlockName = oCurrentDocument.ActiveSheet.TitleBlock.Name
+        TextBox1.Text &= "oCurrentDocument.ActiveSheet.TitleBlock.Name is " & TitleBlockName & vbCrLf
 
         'Open the template file
         Dim oTemplateDocument As Inventor.Document
-        oTemplateDocument = oCurrentDocument.Documents.Open(TemplatePath)
-
-        'oTemplateDocument = CType(oApp.Documents.Open(filepath1, False), Document)
+        oTemplateDocument = CType(oApp.Documents.Open(TemplatePath, False), Document)
 
         'Check to see if the template has the same title block as the currentdocument
         Dim RefTitleBlockDef As TitleBlockDefinition
@@ -592,13 +591,16 @@ Errorhandler:
         For Each RefTitleBlockDef In oTemplateDocument.TitleBlockDefinitions
             If RefTitleBlockDef.Name = TitleBlockName Then
                 TitleBlockExists = True
-                Debug.Print("Found Title Block")
             End If
         Next
 
         If Not TitleBlockExists Then
             TitleBlockName = "SMALL" ' this is our default title block
+            TextBox1.Text &= "Found Title Block" & vbCrLf
+        Else
+            TextBox1.Text &= "Title Block not Found !" & vbCrLf
         End If
+        MessageBox.Show("Continue")
 
         ' Get the new source title block definition.
         Dim oSourceTitleBlockDef As TitleBlockDefinition
@@ -606,9 +608,10 @@ Errorhandler:
 
         'Wipe out any references to the existing title block
         Dim oSheet As Sheet
-        oCurrentDocument.Activate()
+        'oCurrentDocument.Activate()
 
         For Each oSheet In oCurrentDocument.Sheets
+            TextBox1.Text &= "Deleting section oSheet._DisplayName is " & oSheet._DisplayName & vbCrLf
             oSheet.Activate()
             On Error Resume Next
             oSheet.TitleBlock.Delete()
@@ -626,6 +629,8 @@ Errorhandler:
 
         ' Iterate through the sheets.
         For Each oSheet In oCurrentDocument.Sheets
+            TextBox1.Text &= "Add title block section name is " & oSheet._DisplayName & vbCrLf
+
             oSheet.Activate()
             Call oSheet.AddTitleBlock(oNewTitleBlockDef)
         Next
@@ -633,6 +638,54 @@ Errorhandler:
 
     Private Sub Button14_Click(sender As Object, e As EventArgs) Handles Button14.Click
         TitleBlockCopy()
+    End Sub
+
+    Private Sub Button15_Click(sender As Object, e As EventArgs) Handles Button15.Click
+        ChgTitleBlkDef()
+    End Sub
+    Sub ChgTitleBlkDef()
+        'http://adndevblog.typepad.com/manufacturing/2012/12/inventor-change-text-items-in-titleblockdefinition.html
+        TextBox1.Clear()
+
+        Dim oApp As Inventor.Application
+        oApp = CType(GetObject(, "Inventor.Application"), Application)
+        oApp.SilentOperation = vbTrue
+
+        Dim objDrawDoc As DrawingDocument = CType(oApp.ActiveDocument, DrawingDocument)
+        objDrawDoc = CType(oApp.Documents.Open(filepath5, False), Document)
+        TextBox1.Text &= "objDrawDoc is " & objDrawDoc.ToString & vbCrLf
+
+        Dim colTitleBlkDefs As TitleBlockDefinitions = objDrawDoc.TitleBlockDefinitions
+
+        Dim objTitleBlkDef As TitleBlockDefinition = Nothing
+        For Each objTitleBlkDef In colTitleBlkDefs
+            TextBox1.Text &= "objTitleBlkDef name is " & objTitleBlkDef.Name & vbCrLf
+            If objTitleBlkDef.Name = "ANSI - Large" Then
+                TextBox1.Text &= "Found Title Block" & vbCrLf
+                Exit For
+            End If
+        Next
+
+        TextBox1.Text &= "----------------" & vbCrLf
+        ' If we are here we have the title block of interest.
+        ' Get the title block sketch and set it active
+
+
+        Dim objDrwSketch As DrawingSketch = Nothing
+        objTitleBlkDef.Edit(objDrwSketch)
+
+        Dim colTextBoxes As TextBoxes = objDrwSketch.TextBoxes
+
+        For Each objTextBox As TextBox In colTextBoxes
+            TextBox1.Text &= "objTextBox.Text" & objTextBox.Text & vbCrLf
+            If objTextBox.Text = "TITLE" Then
+                objTextBox.Text = "Captain CAD Engineering"
+                Exit For
+            End If
+        Next
+        objTitleBlkDef.ExitEdit(True)
+
+        Beep()
     End Sub
 End Class
 
