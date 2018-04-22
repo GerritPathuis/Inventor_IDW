@@ -7,7 +7,7 @@ Public Class Form1
     Public filepath3 As String = "c:\MyDir"
     Public filepath4 As String = "C:\Temp\Flat_2.dxf"
     Public filepath5 As String = "C:\Inventor_tst\Assembly1.idw"
-    Private thisdoc As Object
+
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         'Directory create and delete
@@ -556,8 +556,8 @@ Errorhandler:
         'Open document
         Dim oDoc As Inventor.Document
         oCurrentDocument = CType(oApp.Documents.Open(filepath5, False), Document)
-        MessageBox.Show("Current 1 doc is " & oCurrentDocument.ActiveSheet.ToString)
-        MessageBox.Show("Current 2 doc is " & thisdoc.path)
+        MessageBox.Show("Current 1 doc is " & oCurrentDocument.ActiveSheet.TitleBlock.Name)
+        'MessageBox.Show("Current 2 doc is " & thisdoc.path)
 
         'Check to see if the titleblock version is current
         Dim Current As Boolean
