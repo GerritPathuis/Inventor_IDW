@@ -521,7 +521,7 @@ Public Class Form1
         oTitleBlockDef = oDrawDoc.TitleBlockDefinitions.Item("SMALL") ' this is our standard title block
 
         Dim oSketch As DrawingSketch
-        Call oTitleBlockDef.Edit(oSketch)
+        oTitleBlockDef.Edit(oSketch)
 
         Dim Counter As Integer
         Dim Name As String
@@ -538,7 +538,7 @@ Public Class Form1
             End If
 
         Next Counter
-        Call oTitleBlockDef.ExitEdit(True)
+        oTitleBlockDef.ExitEdit(True)
         Exit Function
 
 Errorhandler:
@@ -632,7 +632,7 @@ Errorhandler:
             TextBox1.Text &= "Add title block section name is " & oSheet._DisplayName & vbCrLf
 
             oSheet.Activate()
-            Call oSheet.AddTitleBlock(oNewTitleBlockDef)
+            oSheet.AddTitleBlock(oNewTitleBlockDef)
         Next
     End Sub
 
