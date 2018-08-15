@@ -514,14 +514,16 @@ Public Class Form1
         Dim oDoc As Inventor.Document
         oDrawDoc = CType(invApp.Documents.Open(filepath5, False), Document)
 
-
         ' Create the new title block defintion.
         Dim oTitleBlockDef As TitleBlockDefinition
         On Error GoTo Errorhandler
         oTitleBlockDef = oDrawDoc.TitleBlockDefinitions.Item("SMALL") ' this is our standard title block
 
         Dim oSketch As DrawingSketch
+        oSketch = oDrawDoc.Sketches.Add
+
         oTitleBlockDef.Edit(oSketch)
+
 
         Dim Counter As Integer
         Dim Name As String
